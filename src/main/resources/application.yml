@@ -1,0 +1,32 @@
+# Spring Boot configuration
+spring:
+  application:
+    name: forumhub
+  profiles:
+    active: ${APP_PROFILE:dev}
+# API | Personalization
+api:
+  profile: ${spring.profiles.active}
+  system-tag: LANET-API-FORUMHUB
+  system-tag-base: FORUMHUB.API
+  system-version: v.1.0.0
+  system-reference: LA.net | API Fórum Hub
+  system-information: Forum Hub
+  system-description: Forum Hub
+  system-name: ${api.system-reference} ${api.system-version} (${api.system-tag})
+  url-site: www.forumhub.com
+  title-site: FÓRUM HUB
+  email-site: contato@forumhub.com
+  config:
+    language: pt_BR # en_US
+    version: v1
+    path: # /api/${api.config.version}
+# Swagger
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /doc
+    enabled: true
+    tryItOutEnabled: true
