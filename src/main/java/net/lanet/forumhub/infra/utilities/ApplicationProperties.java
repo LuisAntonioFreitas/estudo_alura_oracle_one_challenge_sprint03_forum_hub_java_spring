@@ -1,6 +1,6 @@
 package net.lanet.forumhub.infra.utilities;
 
-import net.lanet.forumhub.domain.sysdb.ISysDbService;
+import net.lanet.forumhub.domain.sys.ISysDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +32,7 @@ public class ApplicationProperties {
     @Value("${api.system-description}") public String apiSystemDescription;
 
     @Value("${api.config.path}") public String apiConfigPath;
-    @Value("${api.config.language}") public String configLanguage;
+    @Value("${api.config.language}") public String apiConfigLanguage;
 
     @Value("${api.url-base}") public String apiUrlBase;
 
@@ -68,7 +68,7 @@ public class ApplicationProperties {
             System.out.printf("Server '%s' ON port %s is running!\n", idProfileActive, this.serverPort);
             System.out.printf("%s/...\n", this.apiUrlBase);
             System.out.printf("%s/doc | Swagger\n", this.apiUrlBase);
-            System.out.printf("%s | %s (%s)\n", connectedDb, this.apiSystemTagBase, this.configLanguage);
+            System.out.printf("%s | %s (%s)\n", connectedDb, this.apiSystemTagBase, this.apiConfigLanguage);
             return null;
         } else {
             return String.format("%s</br>\n", this.apiSystemName)
@@ -76,7 +76,7 @@ public class ApplicationProperties {
                     + String.format("Server '%s' ON port %s is running!</br>\n", idProfileActive, this.serverPort)
                     + String.format("%s/...</br>\n", this.apiUrlBase)
                     + String.format("<a href='%s/doc' target='_blank'>%s/doc</a> | Swagger</br>\n", this.apiUrlBase, this.apiUrlBase)
-                    + String.format("%s | %s (%s)</br>\n", connectedDb, this.apiSystemTagBase, this.configLanguage);
+                    + String.format("%s | %s (%s)</br>\n", connectedDb, this.apiSystemTagBase, this.apiConfigLanguage);
 
         }
 
