@@ -1,5 +1,7 @@
 package net.lanet.forumhub.controller.clients;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import net.lanet.forumhub.infra.clients.viacep.IViaCepService;
 import net.lanet.forumhub.infra.clients.viacep.ViaCepDtoResponse;
@@ -16,12 +18,14 @@ import java.util.Optional;
 
 @RestController
 @Tag(name = "Cep") // Swagger
+@SecurityRequirement(name = "bearer-key") // Swagger
 @RequestMapping(path = "${api.config.path}/cep")
 public class ViaCepController {
     @Autowired
     @Qualifier("viaCepService")
     private IViaCepService service;
 
+    @Operation(summary = "consulta Cep na ViaCEP") // Swagger
     @GetMapping(path = {"/{cep}"})
     public ResponseEntity<Object> findCep(@PathVariable String cep) {
         Optional<ViaCepDtoResponse> response = service.findCep(cep);
