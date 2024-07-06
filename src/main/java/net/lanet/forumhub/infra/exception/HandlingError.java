@@ -86,7 +86,6 @@ public class HandlingError {
                 List.of());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
-
     }
 
     // Erros de Validação de Dados de Regras de Negócio
@@ -149,6 +148,32 @@ public class HandlingError {
                 HttpStatus.UNAUTHORIZED.value(),
                 HttpStatus.UNAUTHORIZED.getReasonPhrase(),
                 !ex.getMessage().isEmpty() ? ex.getMessage() : "Token inválido ou expirado.",
+                details,
+                List.of());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+    }
+    @ExceptionHandler(TokenMissingException.class)
+    public ResponseEntity handlingErrorTokenMissing(TokenMissingException ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
+        Map<String, Object> map = defineCustomMessageError(
+                request.getDescription(false),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Token não informado.",
+                details,
+                List.of());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+    }
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity handlingErrorInvalidToken(InvalidTokenException ex, WebRequest request) {
+        String details = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getLocalizedMessage();
+        Map<String, Object> map = defineCustomMessageError(
+                request.getDescription(false),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                !ex.getMessage().isEmpty() ? ex.getMessage() : "Token inválido.",
                 details,
                 List.of());
 
