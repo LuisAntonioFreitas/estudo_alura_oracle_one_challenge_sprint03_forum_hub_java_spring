@@ -34,8 +34,6 @@ public class Perfil implements Serializable {
     @Column(name="uuid", nullable=false, unique=true, updatable=false, length=50)
     private String uuid;
 
-    @NotBlank(message = "Nome precisa ser preenchido.")
-    @Size(max = 255, message = "Nome não pode conter mais do que 255 caracteres.")
     @Column(name="nome", nullable=false, length=255)
     private String nome;
 
