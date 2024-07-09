@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import net.lanet.forumhub.domain.perfil.Perfil;
 import net.lanet.forumhub.domain.perfil.PerfilDtoView;
+import net.lanet.forumhub.domain.perfil.PerfilDtoViewList;
 import net.lanet.forumhub.infra.utilities.DateTimeUtil;
 
 import java.time.LocalDateTime;
@@ -19,11 +20,7 @@ public record UsuarioDtoViewList(
         String login,
         String email,
         Boolean ativo,
-        String createdAt,
-        String updatedAt,
-        @JsonIgnore
-        Perfil entityPerfil,
-        PerfilDtoView perfil
+        PerfilDtoViewList perfil
 ) {
     public UsuarioDtoViewList(Usuario entity) {
         this(
@@ -33,9 +30,7 @@ public record UsuarioDtoViewList(
                 entity.getLogin(),
                 entity.getEmail(),
                 entity.getAtivo(),
-                entity.getCreatedAt().format(DateTimeUtil.formatter),
-                entity.getUpdatedAt().format(DateTimeUtil.formatter),
-                entity.getPerfil(),
-                new PerfilDtoView(entity.getPerfil()));
+                new PerfilDtoViewList(entity.getPerfil())
+        );
     }
 }

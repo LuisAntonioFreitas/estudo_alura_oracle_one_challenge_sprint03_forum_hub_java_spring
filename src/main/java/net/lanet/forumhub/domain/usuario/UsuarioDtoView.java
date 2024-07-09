@@ -33,6 +33,7 @@ public record UsuarioDtoView(
                 entity.getAtivo(),
                 entity.getCreatedAt().format(DateTimeUtil.formatter),
                 entity.getUpdatedAt().format(DateTimeUtil.formatter),
-                new PerfilDtoView(entity.getPerfil()));
+                new PerfilDtoView(entity.getPerfil())
+        );
     }
 }

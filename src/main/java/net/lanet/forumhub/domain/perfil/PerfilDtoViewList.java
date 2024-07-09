@@ -10,17 +10,14 @@ public record PerfilDtoViewList(
         @JsonProperty("id")
         String uuid,
         String nome,
-        Boolean ativo,
-        String createdAt,
-        String updatedAt
+        Boolean ativo
 ) {
     public PerfilDtoViewList(Perfil entity) {
         this(
 //                entity.getId(),
                 entity.getUuid(),
                 entity.getNome(),
-                entity.getAtivo(),
-                entity.getCreatedAt().format(DateTimeUtil.formatter),
-                entity.getUpdatedAt().format(DateTimeUtil.formatter));
+                entity.getAtivo()
+        );
     }
 }

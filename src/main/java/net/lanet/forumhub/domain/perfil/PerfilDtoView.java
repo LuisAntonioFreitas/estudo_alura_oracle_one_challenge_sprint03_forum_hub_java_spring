@@ -22,6 +22,7 @@ public record PerfilDtoView(
                 entity.getNome(),
                 entity.getAtivo(),
                 entity.getCreatedAt().format(DateTimeUtil.formatter),
-                entity.getUpdatedAt().format(DateTimeUtil.formatter));
+                entity.getUpdatedAt().format(DateTimeUtil.formatter)
+        );
     }
 }
