@@ -19,14 +19,12 @@ import org.supercsv.io.ICsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 import org.supercsv.quote.AlwaysQuoteMode;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -222,9 +220,35 @@ public class TemplateGenericExport {
                             dataRow.getCell(e).setCellStyle((dataRowIndex % 2) != 0
                                     ? cellStyleDefaultAlignmentCenter : cellStyleToggleAlignmentCenter);
                         } else {
-                            dataRow.createCell(e).setCellValue((String) item);
-                            dataRow.getCell(e).setCellStyle((dataRowIndex % 2) != 0
-                                    ? cellStyleDefault : cellStyleToggle);
+                            try {
+                                dataRow.createCell(e).setCellValue((String) item);
+                                dataRow.getCell(e).setCellStyle((dataRowIndex % 2) != 0
+                                        ? cellStyleDefault : cellStyleToggle);
+                            } catch (Exception ex) {
+                                if (item.getClass().isEnum()) {
+                                    dataRow.createCell(e).setCellValue(item.toString());
+                                    dataRow.getCell(e).setCellStyle((dataRowIndex % 2) != 0
+                                            ? cellStyleDefault : cellStyleToggle);
+                                } else {
+                                    StringBuilder resultException = new StringBuilder();
+                                    Class<?> objClass = item.getClass();
+                                    Field[] fields = objClass.getDeclaredFields();
+                                    Arrays.stream(fields).forEach(field -> {
+                                        field.setAccessible(true);
+                                        try {
+                                            String titleException = field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
+                                            var valueException = field.get(item);
+                                            resultException.append(String.format("%s: %s\n", titleException, valueException));
+                                        } catch (Exception ignored) {}
+                                    });
+                                    if (!resultException.isEmpty()) {
+                                        String resultFinalException = resultException.substring(0, (resultException.length()-1));
+                                        dataRow.createCell(e).setCellValue((String) resultFinalException.trim());
+                                    }
+                                    dataRow.getCell(e).setCellStyle((dataRowIndex % 2) != 0
+                                            ? cellStyleDefault : cellStyleToggle);
+                                }
+                            }
                         }
                         sheet1.autoSizeColumn(e);
                         int colSize = sheet1.getColumnWidth(e) + 800;
