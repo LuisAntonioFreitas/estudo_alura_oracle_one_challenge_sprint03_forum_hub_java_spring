@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.lanet.forumhub.domain.perfil.Perfil;
+import net.lanet.forumhub.domain.resposta.Resposta;
+import net.lanet.forumhub.domain.topico.Topico;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -67,6 +70,12 @@ public class Usuario implements Serializable, UserDetails {
     @ManyToOne
     @JoinColumn(name="perfil_id")
     private Perfil perfil;
+
+    @OneToMany(mappedBy = "autor",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Topico> topicos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "autor",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Resposta> respostas = new ArrayList<>();
 
 
     @PrePersist

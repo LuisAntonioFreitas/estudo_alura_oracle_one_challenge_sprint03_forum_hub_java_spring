@@ -5,11 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.lanet.forumhub.domain.curso.Curso;
+import net.lanet.forumhub.domain.resposta.Resposta;
 import net.lanet.forumhub.domain.usuario.Usuario;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -63,8 +66,8 @@ public class Topico implements Serializable {
     @JoinColumn(name="curso_id")
     private Curso curso;
 
-//    @OneToMany(mappedBy = "resposta",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Resposta> respostas = new ArrayList<>();
+    @OneToMany(mappedBy = "topico",  cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Resposta> respostas = new ArrayList<>();
 
 
     @PrePersist

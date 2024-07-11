@@ -2,44 +2,33 @@ package net.lanet.forumhub.domain.topico;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import net.lanet.forumhub.domain.curso.CursoDtoView;
-import net.lanet.forumhub.domain.usuario.UsuarioDtoView;
+import net.lanet.forumhub.domain.resposta.Resposta;
 import net.lanet.forumhub.infra.utilities.DateTimeUtil;
 
-import java.util.List;
-
 @JsonPropertyOrder({"id"})
-public record TopicoDtoView(
+public record TopicoRespostaDtoView(
 //        Long id,
         @JsonProperty("id")
         String uuid,
-        String titulo,
         String mensagem,
         String dataCriacao,
-        Status status,
+        Boolean solucao,
         Boolean ativo,
         String createdAt,
         String updatedAt,
-        UsuarioDtoView autor,
-        CursoDtoView curso,
-        List<TopicoRespostaDtoView> respostas
+        TopicoRespostaUsuarioDtoView autor
 ) {
-    public TopicoDtoView(Topico entity) {
+    public TopicoRespostaDtoView(Resposta entity) {
         this(
 //                entity.getId(),
                 entity.getUuid(),
-                entity.getTitulo(),
                 entity.getMensagem(),
                 entity.getDataCriacao().format(DateTimeUtil.formatter),
-                entity.getStatus(),
+                entity.getSolucao(),
                 entity.getAtivo(),
                 entity.getCreatedAt().format(DateTimeUtil.formatter),
                 entity.getUpdatedAt().format(DateTimeUtil.formatter),
-                new UsuarioDtoView(entity.getAutor()),
-                new CursoDtoView(entity.getCurso()),
-                entity.getRespostas().stream()
-                        .map(TopicoRespostaDtoView::new)
-                        .toList()
+                new TopicoRespostaUsuarioDtoView(entity.getAutor())
         );
     }
 }
