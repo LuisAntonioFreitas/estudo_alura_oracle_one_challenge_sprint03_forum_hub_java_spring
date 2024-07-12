@@ -33,48 +33,48 @@ public class RespostaService implements IRespostaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Resposta> findAll(String topico_id, String search) {
+    public List<Resposta> findAll(String topicoId, String search) {
         List<Resposta> list;
         if (search == null) {
-            list = repository.findAllTopicoId(topico_id);
+            list = repository.findAllTopicoId(topicoId);
         } else {
-            list = repository.findAllFilter(topico_id, search);
+            list = repository.findAllFilter(topicoId, search);
         }
         return list;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Resposta> findAllAtivoTrue(String topico_id, String search) {
+    public List<Resposta> findAllAtivoTrue(String topicoId, String search) {
         List<Resposta> list;
         if (search == null) {
-            list = repository.findAllAtivoTrueAndTopicoId(topico_id);
+            list = repository.findAllAtivoTrueAndTopicoId(topicoId);
         } else {
-            list = repository.findAllAtivoTrueFilter(topico_id, search);
+            list = repository.findAllAtivoTrueFilter(topicoId, search);
         }
         return list;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Resposta> pageFindAll(Pageable page, String topico_id, String search) {
+    public Page<Resposta> pageFindAll(Pageable page, String topicoId, String search) {
         Page<Resposta> list;
         if (search == null) {
-            list = repository.findAllAtivoTrueAndTopicoId(page, topico_id);
+            list = repository.findAllAtivoTrueAndTopicoId(page, topicoId);
         } else {
-            list = repository.pageFindAllFilter(page, topico_id, search);
+            list = repository.pageFindAllFilter(page, topicoId, search);
         }
         return list;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Resposta> pageFindAllAtivoTrue(Pageable page, String topico_id, String search) {
+    public Page<Resposta> pageFindAllAtivoTrue(Pageable page, String topicoId, String search) {
         Page<Resposta> list;
         if (search == null) {
-            list = repository.findAllAtivoTrueAndTopicoId(page, topico_id);
+            list = repository.findAllAtivoTrueAndTopicoId(page, topicoId);
         } else {
-            list = repository.pageFindAllAtivoTrueFilter(page, topico_id, search);
+            list = repository.pageFindAllAtivoTrueFilter(page, topicoId, search);
         }
         return list;
     }

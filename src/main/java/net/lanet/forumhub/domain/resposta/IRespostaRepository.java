@@ -18,11 +18,11 @@ public interface IRespostaRepository extends JpaRepository<Resposta, Long> {
             SELECT  r
             FROM    Resposta r
             JOIN    r.topico t
-            WHERE   (t.uuid = :topico_id)
+            WHERE   (t.uuid = :topicoId)
             ORDER BY r.dataCriacao DESC
             """;
     @Query(queryFindAllTopicoId)
-    List<Resposta> findAllTopicoId(String topico_id);
+    List<Resposta> findAllTopicoId(String topicoId);
 
     String queryFindAllAtivoTrueAndTopicoId =
             """
@@ -30,13 +30,13 @@ public interface IRespostaRepository extends JpaRepository<Resposta, Long> {
             FROM    Resposta r
             JOIN    r.topico t
             WHERE   (r.ativo = true)
-            AND     (t.uuid = :topico_id)
+            AND     (t.uuid = :topicoId)
             ORDER BY r.dataCriacao DESC
             """;
     @Query(queryFindAllAtivoTrueAndTopicoId)
-    List<Resposta> findAllAtivoTrueAndTopicoId(String topico_id);
+    List<Resposta> findAllAtivoTrueAndTopicoId(String topicoId);
     @Query(queryFindAllAtivoTrueAndTopicoId)
-    Page<Resposta> findAllAtivoTrueAndTopicoId(Pageable page, String topico_id);
+    Page<Resposta> findAllAtivoTrueAndTopicoId(Pageable page, String topicoId);
 
     String queryFindAllFilter =
             """
@@ -44,15 +44,15 @@ public interface IRespostaRepository extends JpaRepository<Resposta, Long> {
             FROM    Resposta r
             JOIN    r.autor a
             JOIN    r.topico t
-            WHERE   (t.uuid = :topico_id)
+            WHERE   (t.uuid = :topicoId)
             AND     (r.mensagem LIKE %:search%
                     OR a.login LIKE %:search%)
             ORDER BY r.dataCriacao DESC
             """;
     @Query(queryFindAllFilter)
-    List<Resposta> findAllFilter(String topico_id, String search);
+    List<Resposta> findAllFilter(String topicoId, String search);
     @Query(queryFindAllFilter)
-    Page<Resposta> pageFindAllFilter(Pageable page, String topico_id, String search);
+    Page<Resposta> pageFindAllFilter(Pageable page, String topicoId, String search);
 
     String queryFindAllAtivoTrueFilter =
             """
@@ -61,13 +61,13 @@ public interface IRespostaRepository extends JpaRepository<Resposta, Long> {
             JOIN    r.autor a
             JOIN    r.topico t
             WHERE   (r.ativo = true)
-            AND     (t.uuid = :topico_id)
+            AND     (t.uuid = :topicoId)
             AND     (r.mensagem LIKE %:search%
                     OR a.login LIKE %:search%)
             ORDER BY r.dataCriacao DESC
             """;
     @Query(queryFindAllAtivoTrueFilter)
-    List<Resposta> findAllAtivoTrueFilter(String topico_id, String search);
+    List<Resposta> findAllAtivoTrueFilter(String topicoId, String search);
     @Query(queryFindAllAtivoTrueFilter)
-    Page<Resposta> pageFindAllAtivoTrueFilter(Pageable page, String topico_id, String search);
+    Page<Resposta> pageFindAllAtivoTrueFilter(Pageable page, String topicoId, String search);
 }

@@ -45,60 +45,60 @@ public class RespostaController {
 
 
     @Operation(summary = "lista " + itemLowerCase + "s") // Swagger
-    @GetMapping(path = {"/topico/{topico_id}/resposta/all"})
+    @GetMapping(path = {"/topico/{id}/resposta/all"})
     public ResponseEntity<Object> findAll(HttpServletResponse response,
-                                          @PathVariable(value = "topico_id") String topico_id,
+                                          @PathVariable(value = "id") String topicoId,
                                           @RequestParam(required = false) String search,
                                           @RequestParam(required = false) String export) {
-        if (verifyExport("All", topico_id, search, export, response)) { return null; }
+        if (verifyExport("All", topicoId, search, export, response)) { return null; }
 
-        List<Resposta> listResult = service.findAll(topico_id, search);
+        List<Resposta> listResult = service.findAll(topicoId, search);
         List<RespostaDtoViewList> viewList = listItens(listResult);
 
         return ResponseEntity.status(HttpStatus.OK).body(viewList);
     }
 
     @Operation(summary = "lista " + itemLowerCase + "s ativos") // Swagger
-    @GetMapping(path = {"/topico/{topico_id}/resposta/all/ativo"})
+    @GetMapping(path = {"/topico/{id}/resposta/all/ativo"})
     public ResponseEntity<Object> findAllAtivoTrue(HttpServletResponse response,
-                                                   @PathVariable(value = "topico_id") String topico_id,
+                                                   @PathVariable(value = "id") String topicoId,
                                                    @RequestParam(required = false) String search,
                                                    @RequestParam(required = false) String export) {
-        if (verifyExport("Ativo", topico_id, search, export, response)) { return null; }
+        if (verifyExport("Ativo", topicoId, search, export, response)) { return null; }
 
-        List<Resposta> listResult = service.findAllAtivoTrue(topico_id, search);
+        List<Resposta> listResult = service.findAllAtivoTrue(topicoId, search);
         List<RespostaDtoViewList> viewList = listItens(listResult);
 
         return ResponseEntity.status(HttpStatus.OK).body(viewList);
     }
 
     @Operation(summary = "lista " + itemLowerCase + "s com paginação") // Swagger
-    @GetMapping(path = {"/topico/{topico_id}/resposta"})
+    @GetMapping(path = {"/topico/{id}/resposta"})
     public ResponseEntity<Object> pageFindAll(@PageableDefault(page = pageNumber, size = pageSize, sort = {"dataCriacao"})
                                               Pageable page,
                                               HttpServletResponse response,
-                                              @PathVariable(value = "topico_id") String topico_id,
+                                              @PathVariable(value = "id") String topicoId,
                                               @RequestParam(required = false) String search,
                                               @RequestParam(required = false) String export) {
-        if (verifyExport("All", topico_id, search, export, response)) { return null; }
+        if (verifyExport("All", topicoId, search, export, response)) { return null; }
 
-        Page<Resposta> listResult = service.pageFindAll(page, topico_id, search);
+        Page<Resposta> listResult = service.pageFindAll(page, topicoId, search);
         Page<RespostaDtoViewList> viewList = pageListItens(listResult);
 
         return ResponseEntity.status(HttpStatus.OK).body(viewList);
     }
 
     @Operation(summary = "lista " + itemLowerCase + "s ativos com paginação") // Swagger
-    @GetMapping(path = {"/topico/{topico_id}/resposta/ativo"})
+    @GetMapping(path = {"/topico/{id}/resposta/ativo"})
     public ResponseEntity<Object> pageFindAllAtivoTrue(@PageableDefault(page = pageNumber, size = pageSize, sort = {"dataCriacao"})
                                                        Pageable page,
                                                        HttpServletResponse response,
-                                                       @PathVariable(value = "topico_id") String topico_id,
+                                                       @PathVariable(value = "id") String topicoId,
                                                        @RequestParam(required = false) String search,
                                                        @RequestParam(required = false) String export) {
-        if (verifyExport("Ativo", topico_id, search, export, response)) { return null; }
+        if (verifyExport("Ativo", topicoId, search, export, response)) { return null; }
 
-        Page<Resposta> listResult = service.pageFindAllAtivoTrue(page, topico_id, search);
+        Page<Resposta> listResult = service.pageFindAllAtivoTrue(page, topicoId, search);
         Page<RespostaDtoViewList> viewList = pageListItens(listResult);
 
         return ResponseEntity.status(HttpStatus.OK).body(viewList);
@@ -184,7 +184,7 @@ public class RespostaController {
     }
 
 
-    private Boolean verifyExport(String type, String topico_id, String search, String export, HttpServletResponse response) {
+    private Boolean verifyExport(String type, String topicoId, String search, String export, HttpServletResponse response) {
         if (export != null) {
             String defineSearch = null;
             if (search != null) { defineSearch = String.format("Search: %s", search); }
@@ -195,10 +195,10 @@ public class RespostaController {
 
             List<Resposta> listResult = null;
             if (type.equalsIgnoreCase("All")) {
-                listResult = service.findAll(topico_id, search);
+                listResult = service.findAll(topicoId, search);
             }
             if (type.equalsIgnoreCase("Ativo")) {
-                listResult = service.findAllAtivoTrue(topico_id, search);
+                listResult = service.findAllAtivoTrue(topicoId, search);
             }
             List<RespostaDtoViewList> viewList = listItens(listResult);
             if (viewList.isEmpty()) {

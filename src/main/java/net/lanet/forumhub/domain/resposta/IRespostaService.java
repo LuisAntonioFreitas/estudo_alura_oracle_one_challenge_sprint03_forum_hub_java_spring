@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IRespostaService extends IHandleExportFile {
-    List<Resposta> findAll(String topico_id, String search);
-    List<Resposta> findAllAtivoTrue(String topico_id, String search);
-    Page<Resposta> pageFindAll(Pageable page, String topico_id, String search);
-    Page<Resposta> pageFindAllAtivoTrue(Pageable page, String topico_id, String search);
+    List<Resposta> findAll(String topicoId, String search);
+    List<Resposta> findAllAtivoTrue(String topicoId, String search);
+    Page<Resposta> pageFindAll(Pageable page, String topicoId, String search);
+    Page<Resposta> pageFindAllAtivoTrue(Pageable page, String topicoId, String search);
     Optional<Resposta> findById(String id);
 
     void delete(Resposta item);
