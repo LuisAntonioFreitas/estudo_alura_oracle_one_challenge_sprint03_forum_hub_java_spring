@@ -173,7 +173,7 @@ E do arquivo do [diagrama](https://raw.githubusercontent.com/LuisAntonioFreitas/
 
 ---
 
-## ⭐ Créditos<a id="credits"></a>
+## ⭐ Créditos<a id="creditos"></a>
 
 * [Oracle One](https://www.oracle.com/br/education/oracle-next-education/)
 * [Alura](https://www.alura.com.br/)
