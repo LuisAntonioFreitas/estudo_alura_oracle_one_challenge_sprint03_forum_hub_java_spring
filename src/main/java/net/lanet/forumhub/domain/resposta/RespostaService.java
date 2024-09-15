@@ -1,20 +1,17 @@
 package net.lanet.forumhub.domain.resposta;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletResponse;
 import net.lanet.forumhub.domain.topico.*;
 import net.lanet.forumhub.domain.usuario.IUsuarioRepository;
 import net.lanet.forumhub.domain.usuario.Usuario;
+import net.lanet.forumhub.infra.shared.JpaRepositoryCustom;
 import net.lanet.forumhub.infra.utilities.exportfiles.TemplateGenericExport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static net.lanet.forumhub.infra.utilities.HandleFindIdOrUuidUtil.getIdOrUuid;
@@ -28,8 +25,8 @@ public class RespostaService implements IRespostaService {
     private IUsuarioRepository repositoryAutor;
     @Autowired
     private ITopicoRepository repositoryTopico;
-    @Autowired
-    private TemplateGenericExport template;
+//    @Autowired
+//    private TemplateGenericExport template;
 
     @Override
     @Transactional(readOnly = true)
@@ -110,70 +107,78 @@ public class RespostaService implements IRespostaService {
 
     @Override
     public Resposta update(Resposta item, RespostaDtoUpdateRequest data) {
-        Usuario autor = findAutorUpdate(data.autor_id(), item.getAutor());
-        Topico topico = findTopicoUpdate(data.topico_id(), item.getTopico());
+//        Usuario autor = findAutorUpdate(data.autor_id(), item.getAutor());
+//        Topico topico = findTopicoUpdate(data.topico_id(), item.getTopico());
+        Usuario autor = JpaRepositoryCustom.findEntityNotNull(
+                data.autor_id(), item.getAutor(), repositoryAutor, new Object[] {"o","Autor"});
+        Topico topico = JpaRepositoryCustom.findEntityNotNull(
+                data.topico_id(), item.getTopico(), repositoryTopico, new Object[] {"o","Tópico"});
         item.update(data, autor, topico);
         repository.save(item);
         return item;
     }
-    private Usuario findAutorUpdate(String id, Usuario autor) {
-        if (id == null) { return autor; }
-        return findAutorCreate(id);
-    }
-    private Topico findTopicoUpdate(String id, Topico topico) {
-        if (id == null) { return topico; }
-        return findTopicoCreate(id);
-    }
+//    private Usuario findAutorUpdate(String id, Usuario autor) {
+//        if (id == null) { return autor; }
+//        return findAutorCreate(id);
+//    }
+//    private Topico findTopicoUpdate(String id, Topico topico) {
+//        if (id == null) { return topico; }
+//        return findTopicoCreate(id);
+//    }
 
     @Override
     public Resposta create(RespostaDtoCreateRequest data) {
-        Usuario autor = findAutorCreate(data.autor_id());
-        Topico topico = findTopicoCreate(data.topico_id());
+//        Usuario autor = findAutorCreate(data.autor_id());
+//        Topico topico = findTopicoCreate(data.topico_id());
+        Usuario autor = JpaRepositoryCustom.findEntityNotNull(
+                data.autor_id(), null, repositoryAutor, new Object[] {"o","Autor"});
+        Topico topico = JpaRepositoryCustom.findEntityNotNull(
+                data.topico_id(), null, repositoryTopico, new Object[] {"o","Tópico"});
         Resposta item = new Resposta(data, autor, topico);
         repository.save(item);
         return item;
     }
-    private Usuario findAutorCreate(String id) {
-        String item = "Autor";
-        Object[] value = getIdOrUuid(id);
-        Long longId = (Long) value[0];
-        String uuid = (String) value[1];
-        Optional<Usuario> optional = repositoryAutor.findFirstTop1ByIdOrUuid(longId, uuid);
-        if (optional.isEmpty()) {
-            throw new EntityNotFoundException(String.format("%s não foi encontrado", item));
-        }
-        return optional.get();
-    }
-    private Topico findTopicoCreate(String id) {
-        String item = "Tópico";
-        Object[] value = getIdOrUuid(id);
-        Long longId = (Long) value[0];
-        String uuid = (String) value[1];
-        Optional<Topico> optional = repositoryTopico.findFirstTop1ByIdOrUuid(longId, uuid);
-        if (optional.isEmpty()) {
-            throw new EntityNotFoundException(String.format("%s não foi encontrado", item));
-        }
-        return optional.get();
-    }
+//    private Usuario findAutorCreate(String id) {
+//        String item = "Autor";
+//        Object[] value = getIdOrUuid(id);
+//        Long longId = (Long) value[0];
+//        String uuid = (String) value[1];
+//        Optional<Usuario> optional = repositoryAutor.findFirstTop1ByIdOrUuid(longId, uuid);
+//        if (optional.isEmpty()) {
+//            throw new EntityNotFoundException(String.format("%s não foi encontrado", item));
+//        }
+//        return optional.get();
+//    }
+//    private Topico findTopicoCreate(String id) {
+//        String item = "Tópico";
+//        Object[] value = getIdOrUuid(id);
+//        Long longId = (Long) value[0];
+//        String uuid = (String) value[1];
+//        Optional<Topico> optional = repositoryTopico.findFirstTop1ByIdOrUuid(longId, uuid);
+//        if (optional.isEmpty()) {
+//            throw new EntityNotFoundException(String.format("%s não foi encontrado", item));
+//        }
+//        return optional.get();
+//    }
 
 
 
-    @Override
-    public void generateXLS(HttpServletResponse response, List<Map<String, Object>> list, String fileName,
-                            String title, String filter, String tabName) {
-        // Excel
-        template.generateXLS(response, list, fileName, title, filter, tabName);
-    }
-    @Override
-    public void generateCSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generateCSV(response, list, fileName);
-    }
-    @Override
-    public void generateTSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generateTSV(response, list, fileName);
-    }
-    @Override
-    public void generatePDF(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generatePDF(response, list, fileName);
-    }
+//    @Override
+//    public void generateXLS(HttpServletResponse response, List<Map<String, Object>> list, String fileName,
+//                            String title, String filter, String tabName) {
+//        // Excel
+//        template.generateXLS(response, list, fileName, title, filter, tabName);
+//    }
+//    @Override
+//    public void generateCSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generateCSV(response, list, fileName);
+//    }
+//    @Override
+//    public void generateTSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generateTSV(response, list, fileName);
+//    }
+//    @Override
+//    public void generatePDF(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generatePDF(response, list, fileName);
+//    }
 }

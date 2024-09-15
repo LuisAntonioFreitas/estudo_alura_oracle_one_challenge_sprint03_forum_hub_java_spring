@@ -1,6 +1,5 @@
 package net.lanet.forumhub.domain.perfil;
 
-import jakarta.servlet.http.HttpServletResponse;
 import net.lanet.forumhub.infra.utilities.exportfiles.TemplateGenericExport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,8 +19,8 @@ import static net.lanet.forumhub.infra.utilities.HandleFindIdOrUuidUtil.getIdOrU
 public class PerfilService implements IPerfilService {
     @Autowired
     private IPerfilRepository repository;
-    @Autowired
-    private TemplateGenericExport template;
+//    @Autowired
+//    private TemplateGenericExport template;
 
     @Override
     @Transactional(readOnly = true)
@@ -110,22 +109,22 @@ public class PerfilService implements IPerfilService {
 
 
 
-    @Override
-    public void generateXLS(HttpServletResponse response, List<Map<String, Object>> list, String fileName,
-                            String title, String filter, String tabName) {
-        // Excel
-        template.generateXLS(response, list, fileName, title, filter, tabName);
-    }
-    @Override
-    public void generateCSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generateCSV(response, list, fileName);
-    }
-    @Override
-    public void generateTSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generateTSV(response, list, fileName);
-    }
-    @Override
-    public void generatePDF(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generatePDF(response, list, fileName);
-    }
+//    @Override
+//    public void generateXLS(HttpServletResponse response, List<Map<String, Object>> list, String fileName,
+//                            String title, String filter, String tabName) {
+//        // Excel
+//        template.generateXLS(response, list, fileName, title, filter, tabName);
+//    }
+//    @Override
+//    public void generateCSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generateCSV(response, list, fileName);
+//    }
+//    @Override
+//    public void generateTSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generateTSV(response, list, fileName);
+//    }
+//    @Override
+//    public void generatePDF(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generatePDF(response, list, fileName);
+//    }
 }

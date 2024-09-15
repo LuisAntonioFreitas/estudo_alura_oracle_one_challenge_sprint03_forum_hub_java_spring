@@ -9,8 +9,8 @@ import jakarta.validation.Valid;
 import net.lanet.forumhub.domain.syssql.ISysSqlService;
 import net.lanet.forumhub.domain.syssql.SysSpDtoRequest;
 import net.lanet.forumhub.domain.syssql.SysSqlDtoRequest;
+import net.lanet.forumhub.infra.shared.ServiceCustom;
 import net.lanet.forumhub.infra.utilities.DateTimeUtil;
-import net.lanet.forumhub.infra.utilities.RegexUtil;
 import net.lanet.forumhub.infra.utilities.exportfiles.HandleExportFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,9 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 @RestController
@@ -33,6 +31,11 @@ public class SysSqlController {
     @Autowired
     @Qualifier("sysSqlService")
     private ISysSqlService service;
+
+    @Autowired
+    private ServiceCustom serviceCustom;
+    @Autowired
+    private HandleExportFile handleExportFile;
 
     //    @Operation(hidden = true) // Swagger
     @SecurityRequirement(name = "bearer-key") // Swagger
@@ -68,7 +71,8 @@ public class SysSqlController {
             // Converte tipos de dados
             List<Map<String, Object>> convertedSelectedResults = convertResults(selectedResults);
 
-            if (verifyExport("All", null, export, response, "Sql", convertedSelectedResults)) { return null; }
+            if (serviceCustom.verifyExport("All", null, export, convertedSelectedResults,
+                    response, "Sql")) { return null; }
             return ResponseEntity.ok(convertedSelectedResults);
 
         } catch (EntityNotFoundException e) {
@@ -101,7 +105,8 @@ public class SysSqlController {
             // Converte tipos de dados
             List<Map<String, Object>> convertedSelectedResults = convertResults(selectedResults);
 
-            if (verifyExport("All", null, export, response, "Sp", convertedSelectedResults)) { return null; }
+            if (serviceCustom.verifyExport("All", null, export, convertedSelectedResults,
+                    response, "Sp")) { return null; }
             return ResponseEntity.ok(convertedSelectedResults);
 
         } catch (EntityNotFoundException e) {
@@ -150,19 +155,22 @@ public class SysSqlController {
         return data;
     }
 
-    private Boolean verifyExport(String type, String search, String export, HttpServletResponse response,
-                                 String item, List<Map<String, Object>> viewList) {
-        if (export != null) {
-            if (viewList.isEmpty()) {
-                throw new EntityNotFoundException("Não existe conteúdo a ser exportado.");
-            }
-            String name = RegexUtil.normalizeStringLettersAndNumbers(item);
-            HandleExportFile.execute(export, service, response, viewList,
-                    String.format("%sList%s", name, type), String.format("Listagem | %s", item.toUpperCase()), null, name);
-            return true;
-        }
-        return false;
-    }
+//    private Boolean verifyExport(String type, String search, String export,
+//                                 List<Map<String, Object>> viewList,
+//                                 HttpServletResponse response, String item) {
+//        if (export != null) {
+//            if (viewList.isEmpty()) {
+//                throw new EntityNotFoundException("Não existe conteúdo a ser exportado.");
+//            }
+//            String name = RegexUtil.normalizeStringLettersAndNumbers(item);
+//            String filename = String.format("%sList%s", name, type);
+//            String title = String.format("Listagem | %s", item.toUpperCase());
+//            handleExportFile.execute(export, response, viewList, filename, title, null, name);
+//
+//            return true;
+//        }
+//        return false;
+//    }
 
 }
 

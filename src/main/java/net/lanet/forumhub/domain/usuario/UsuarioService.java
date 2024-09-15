@@ -1,9 +1,8 @@
 package net.lanet.forumhub.domain.usuario;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletResponse;
 import net.lanet.forumhub.domain.perfil.IPerfilRepository;
 import net.lanet.forumhub.domain.perfil.Perfil;
+import net.lanet.forumhub.infra.shared.JpaRepositoryCustom;
 import net.lanet.forumhub.infra.utilities.PasswordEncoderUtil;
 import net.lanet.forumhub.infra.utilities.exportfiles.TemplateGenericExport;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static net.lanet.forumhub.infra.utilities.HandleFindIdOrUuidUtil.getIdOrUuid;
@@ -30,8 +28,8 @@ public class UsuarioService implements IUsuarioService {
     private IPerfilRepository repositoryPerfil;
     @Autowired
     private PasswordEncoderUtil passwordEncoderUtil;
-    @Autowired
-    private TemplateGenericExport template;
+//    @Autowired
+//    private TemplateGenericExport template;
 
     @Override
     @Transactional(readOnly = true)
@@ -106,14 +104,12 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario update(Usuario item, UsuarioDtoUpdateRequest data) {
-        Perfil perfil = findPerfilUpdate(data.perfil_id(), item.getPerfil());
+//        Perfil perfil = findPerfil(data.perfil_id(), item.getPerfil());
+        Perfil perfil = JpaRepositoryCustom.findEntityNotNull(
+                data.perfil_id(), item.getPerfil(), repositoryPerfil, new Object[] {"o","Perfil"});
         item.update(data, perfil);
         repository.save(item);
         return item;
-    }
-    private Perfil findPerfilUpdate(String id, Perfil perfil) {
-        if (id == null) { return perfil; }
-        return findPerfilCreate(id);
     }
 
     @Override
@@ -132,23 +128,28 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario create(UsuarioDtoCreateRequest data) {
-        Perfil perfil = findPerfilCreate(data.perfil_id());
+//        Perfil perfil = findPerfil(data.perfil_id(), null);
+        Perfil perfil = JpaRepositoryCustom.findEntityNotNull(
+                data.perfil_id(), null, repositoryPerfil, new Object[] {"o","Perfil"});
         Usuario item = new Usuario(data, perfil);
         item.setSenha(passwordEncoderUtil.encode(item.getSenha()));
         repository.save(item);
         return item;
     }
-    private Perfil findPerfilCreate(String id) {
-        String item = "Perfil";
-        Object[] value = getIdOrUuid(id);
-        Long longId = (Long) value[0];
-        String uuid = (String) value[1];
-        Optional<Perfil> optional = repositoryPerfil.findFirstTop1ByIdOrUuid(longId, uuid);
-        if (optional.isEmpty()) {
-            throw new EntityNotFoundException(String.format("%s não foi encontrado", item));
-        }
-        return optional.get();
-    }
+//    private Perfil findPerfil(String id, Perfil perfil) {
+//        if (id == null && perfil != null) { return perfil; }
+//        String item = "Perfil";
+//        String mensagem = String.format("%s não foi encontrado", item);
+//        if (id == null) { throw new EntityNotFoundException(mensagem); } // return null; }
+//        Object[] value = getIdOrUuid(id);
+//        Long longId = (Long) value[0];
+//        String uuid = (String) value[1];
+//        Optional<Perfil> optional = repositoryPerfil.findFirstTop1ByIdOrUuid(longId, uuid);
+//        if (optional.isEmpty()) {
+//            throw new EntityNotFoundException(mensagem);
+//        }
+//        return optional.get();
+//    }
 
     @Transactional(readOnly = true)
     public Usuario login(String login, String senha) {
@@ -163,22 +164,23 @@ public class UsuarioService implements IUsuarioService {
 
 
 
-    @Override
-    public void generateXLS(HttpServletResponse response, List<Map<String, Object>> list, String fileName,
-                            String title, String filter, String tabName) {
-        // Excel
-        template.generateXLS(response, list, fileName, title, filter, tabName);
-    }
-    @Override
-    public void generateCSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generateCSV(response, list, fileName);
-    }
-    @Override
-    public void generateTSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generateTSV(response, list, fileName);
-    }
-    @Override
-    public void generatePDF(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
-        template.generatePDF(response, list, fileName);
-    }
+
+//    @Override
+//    public void generateXLS(HttpServletResponse response, List<Map<String, Object>> list, String fileName,
+//                            String title, String filter, String tabName) {
+//        // Excel
+//        template.generateXLS(response, list, fileName, title, filter, tabName);
+//    }
+//    @Override
+//    public void generateCSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generateCSV(response, list, fileName);
+//    }
+//    @Override
+//    public void generateTSV(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generateTSV(response, list, fileName);
+//    }
+//    @Override
+//    public void generatePDF(HttpServletResponse response, List<Map<String, Object>> list, String fileName) {
+//        template.generatePDF(response, list, fileName);
+//    }
 }

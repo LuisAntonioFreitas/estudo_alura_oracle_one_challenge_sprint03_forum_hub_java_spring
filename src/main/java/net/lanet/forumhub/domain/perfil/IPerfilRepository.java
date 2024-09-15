@@ -1,17 +1,16 @@
 package net.lanet.forumhub.domain.perfil;
 
+import net.lanet.forumhub.infra.shared.JpaRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface IPerfilRepository extends JpaRepository<Perfil, Long> {
-    Optional<Perfil> findFirstTop1ByIdOrUuid(Long id, String uuid);
+public interface IPerfilRepository extends JpaRepositoryCustom.MethodsStandard<Perfil> {
+//    Optional<Perfil> findFirstTop1ByIdOrUuid(Long id, String uuid);
 
     List<Perfil> findByAtivoTrueOrderByNomeAsc();
     Page<Perfil> findByAtivoTrueOrderByNomeAsc(Pageable page);

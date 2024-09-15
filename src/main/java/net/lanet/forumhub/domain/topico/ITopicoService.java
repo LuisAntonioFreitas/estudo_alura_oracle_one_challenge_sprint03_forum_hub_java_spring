@@ -1,13 +1,13 @@
 package net.lanet.forumhub.domain.topico;
 
-import net.lanet.forumhub.infra.utilities.exportfiles.IHandleExportFile;
+import net.lanet.forumhub.infra.shared.ServiceCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ITopicoService extends IHandleExportFile {
+public interface ITopicoService extends ServiceCustom.MethodsStandard<Topico> {
     List<Topico> findAll(String search);
     List<Topico> findAllAtivoTrue(String search);
     Page<Topico> pageFindAll(Pageable page, String search);

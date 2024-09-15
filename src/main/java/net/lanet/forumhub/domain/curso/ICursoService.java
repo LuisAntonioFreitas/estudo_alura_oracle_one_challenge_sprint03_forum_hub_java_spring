@@ -1,13 +1,13 @@
 package net.lanet.forumhub.domain.curso;
 
-import net.lanet.forumhub.infra.utilities.exportfiles.IHandleExportFile;
+import net.lanet.forumhub.infra.shared.ServiceCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ICursoService extends IHandleExportFile {
+public interface ICursoService extends ServiceCustom.MethodsStandard<Curso> {
     List<Curso> findAll(String search);
     List<Curso> findAllAtivoTrue(String search);
     Page<Curso> pageFindAll(Pageable page, String search);

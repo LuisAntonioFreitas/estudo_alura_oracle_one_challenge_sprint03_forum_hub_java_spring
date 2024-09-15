@@ -1,17 +1,16 @@
 package net.lanet.forumhub.domain.resposta;
 
+import net.lanet.forumhub.infra.shared.JpaRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface IRespostaRepository extends JpaRepository<Resposta, Long> {
-    Optional<Resposta> findFirstTop1ByIdOrUuid(Long id, String uuid);
+public interface IRespostaRepository extends JpaRepositoryCustom.MethodsStandard<Resposta> {
+//    Optional<Resposta> findFirstTop1ByIdOrUuid(Long id, String uuid);
 
     String queryFindAllTopicoId =
             """
